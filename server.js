@@ -1,25 +1,15 @@
+// server/server.js
 const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const userRoutes = require('./routes/index');  // Make sure this path is correct
-
 const app = express();
 
-// Middleware to parse JSON and URL-encoded data
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Import routes
+const routes = require('./routes/index');
 
-// Set view engine (optional, if you're using views for rendering)
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// Middleware (if needed)
+app.use(express.json());
 
-// Use the routes defined in routes/index.js
-app.use('/', userRoutes);
+// Use routes
+app.use('/', routes);
 
-// Set up the port the server will listen on
-const PORT = process.env.PORT || 3000;
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export the handler for Vercel (this is how Vercel works with serverless functions)
+module.exports = app;
